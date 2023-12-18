@@ -97,6 +97,7 @@ func (sio *SerialIO) Start() error {
 
 	var err error
 	sio.conn, err = serial.Open(sio.connOptions)
+
 	if err != nil {
 
 		// might need a user notification here, TBD
@@ -224,6 +225,15 @@ func (sio *SerialIO) readLine(logger *zap.SugaredLogger, reader *bufio.Reader) c
 	}()
 
 	return ch
+}
+
+// connwriter := bufio.NewWriter(sio.conn)
+func (sio *SerialIO) writeLine(logger *zap.SugaredLogger, strLine string) {
+	b := []byte(strLine)
+	n, err := sio.conn.Write(b)
+	if err != nil || n < len(b) {
+		sio.logger.Warnw("Failed to write serial connection", "error", err)
+	}
 }
 
 func (sio *SerialIO) handleLine(logger *zap.SugaredLogger, line string) {

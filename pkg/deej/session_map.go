@@ -253,6 +253,7 @@ func (m *sessionMap) handleSliderMoveEvent(event SliderMoveEvent) {
 						adjustmentFailed = true
 					}
 				}
+				m.deej.serial.writeLine(m.logger, fmt.Sprintf("|%s,%.0f|", strings.TrimSuffix(session.Key(), ".exe"), session.GetVolume()*100))
 			}
 		}
 	}
